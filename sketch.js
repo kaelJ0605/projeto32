@@ -8,7 +8,9 @@ var divisions =[];
 var ball;
 
 var divisionHeight=300;
-var score =0;
+var score = 0;
+var count = 0;
+var gameState = "start";
 
 function setup() {
   createCanvas(800, 800);
@@ -56,7 +58,11 @@ function draw() {
   text(" 200 ", 720, 550);
   Engine.update(engine);
   ground.display();
+  if (gameState == "end"){
 
+    textSize (100);
+    text ("GAME OVER",150,250);
+  }
 
   for (var i = 0; i < plinkos.length; i++) {
      plinkos[i].display();  
@@ -65,6 +71,26 @@ function draw() {
     if(ball!=null)
     {
        ball.display();
+       if (ball.body.position.y > 760){
+         if (ball.body.position.x < 300){
+           score = score + 500;
+           ball = null;
+           if (count >= 5)gameState = "end";
+         }
+         else if (ball.body.position.x < 600 && ball.body.position.x > 301){
+
+          score = score + 100;
+          ball =null;
+          if (count >= 5)gameState = "end";
+
+         }
+         else if (ball.body.position.x > 601 && ball.body.position.x < 900){
+
+          score = score + 200;
+          ball =null
+          if (count >= 5)gameState = "end";
+         }
+       }
   
   
     }
@@ -79,6 +105,11 @@ function draw() {
 
 function mousePressed()
 {
+  if (gameState!=="end"){
+
+    count++;
+  }
+
   ball=new Ball(mouseX, 10, 10, 10);  
 }
 
